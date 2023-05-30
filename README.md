@@ -6,7 +6,7 @@
 
 安装：
 
-> npm i eslint eslint-plugin-vue eslint-config-prettier prettier --save-dev
+> npm i eslint eslint-plugin-vue vite-plugin-eslint eslint-config-prettier prettier @vue/eslint-config-prettier--save-dev
 
 包管理文件增加 eslint 脚本启动命令：
 

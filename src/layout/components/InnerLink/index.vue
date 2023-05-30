@@ -4,8 +4,7 @@
       :id="iframeId"
       style="width: 100%; height: 100%"
       :src="src"
-      frameborder="no"
-    ></iframe>
+      frameborder="no"></iframe>
   </div>
 </template>
 
@@ -13,12 +12,12 @@
 const props = defineProps({
   src: {
     type: String,
-    default: "/"
+    default: '/'
   },
   iframeId: {
     type: String
   }
-});
+})
 
-const height = ref(document.documentElement.clientHeight - 94.5 + "px");
+const height = ref(document.documentElement.clientHeight - 94.5 + 'px')
 </script>

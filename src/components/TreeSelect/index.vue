@@ -8,9 +8,10 @@
       :clearable="true"
       @clear="clearHandle"
       :filter-method="selectFilterData"
-      :placeholder="placeholder"
-    >
-      <el-option :value="valueId" :label="valueTitle">
+      :placeholder="placeholder">
+      <el-option
+        :value="valueId"
+        :label="valueTitle">
         <el-tree
           id="tree-option"
           ref="selectTree"
@@ -21,16 +22,14 @@
           :expand-on-click-node="false"
           :default-expanded-keys="defaultExpandedKey"
           :filter-node-method="filterNode"
-          @node-click="handleNodeClick"
-        ></el-tree>
+          @node-click="handleNodeClick"></el-tree>
       </el-option>
     </el-select>
   </div>
 </template>
 
 <script setup>
-
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance()
 
 const props = defineProps({
   /* 配置项 */
@@ -51,38 +50,38 @@ const props = defineProps({
       return false
     }
   },
-  /**当前双向数据绑定的值 */
+  /** 当前双向数据绑定的值 */
   value: {
     type: [String, Number],
     default: ''
   },
-  /**当前的数据 */
+  /** 当前的数据 */
   options: {
     type: Array,
     default: () => []
   },
-  /**输入框内部的文字 */
+  /** 输入框内部的文字 */
   placeholder: {
     type: String,
     default: ''
   }
 })
 
-const emit = defineEmits(['update:value']);
+const emit = defineEmits(['update:value'])
 
 const valueId = computed({
   get: () => props.value,
-  set: (val) => {
+  set: val => {
     emit('update:value', val)
   }
-});
-const valueTitle = ref('');
-const defaultExpandedKey = ref([]);
+})
+const valueTitle = ref('')
+const defaultExpandedKey = ref([])
 
 function initHandle() {
   nextTick(() => {
-    const selectedValue = valueId.value;
-    if(selectedValue !== null && typeof (selectedValue) !== 'undefined') {
+    const selectedValue = valueId.value
+    if (selectedValue !== null && typeof selectedValue !== 'undefined') {
       const node = proxy.$refs.selectTree.getNode(selectedValue)
       if (node) {
         valueTitle.value = node.data[props.objMap.label]
@@ -96,8 +95,8 @@ function initHandle() {
 }
 function handleNodeClick(node) {
   valueTitle.value = node[props.objMap.label]
-  valueId.value = node[props.objMap.value];
-  defaultExpandedKey.value = [];
+  valueId.value = node[props.objMap.value]
+  defaultExpandedKey.value = []
   proxy.$refs.treeSelect.blur()
   selectFilterData('')
 }
@@ -111,12 +110,12 @@ function filterNode(value, data) {
 function clearHandle() {
   valueTitle.value = ''
   valueId.value = ''
-  defaultExpandedKey.value = [];
+  defaultExpandedKey.value = []
   clearSelected()
 }
 function clearSelected() {
   const allNode = document.querySelectorAll('#tree-option .el-tree-node')
-  allNode.forEach((element) => element.classList.remove('is-current'))
+  allNode.forEach(element => element.classList.remove('is-current'))
 }
 
 onMounted(() => {
@@ -124,11 +123,11 @@ onMounted(() => {
 })
 
 watch(valueId, () => {
-  initHandle();
+  initHandle()
 })
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 @import "@/assets/styles/variables.module.scss";
 .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
   padding: 0;
