@@ -6,10 +6,11 @@
         sideTheme === 'theme-dark'
           ? variables.menuBackground
           : variables.menuLightBackground
-    }">
-    <logo
+    }"
+    v-if="mySidebarRouters && mySidebarRouters.length > 0">
+    <!-- <logo
       v-if="showLogo"
-      :collapse="isCollapse" />
+      :collapse="isCollapse" /> -->
     <el-scrollbar
       :class="sideTheme"
       wrap-class="scrollbar-wrapper">
@@ -26,22 +27,21 @@
             ? variables.menuColor
             : variables.menuLightColor
         "
-        :unique-opened="true"
+        :unique-opened="false"
         :active-text-color="theme"
         :collapse-transition="false"
         mode="vertical">
         <sidebar-item
-          v-for="(route, index) in sidebarRouters"
-          :key="route.path + index"
+          v-for="route in mySidebarRouters"
+          :key="route.fullPath"
           :item="route"
-          :base-path="route.path" />
+          :base-path="route.fullPath" />
       </el-menu>
     </el-scrollbar>
   </div>
 </template>
 
 <script setup>
-import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/assets/styles/variables.module.scss'
 import useAppStore from '@/store/modules/app'
@@ -53,7 +53,9 @@ const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
-const sidebarRouters = computed(() => permissionStore.sidebarRouters)
+const mySidebarRouters = computed(() => {
+  return permissionStore.secondaryRoutes
+})
 const showLogo = computed(() => settingsStore.sidebarLogo)
 const sideTheme = computed(() => settingsStore.sideTheme)
 const theme = computed(() => settingsStore.theme)
@@ -67,4 +69,6 @@ const activeMenu = computed(() => {
   }
   return path
 })
+
+permissionStore.setSecondaryRoutes(route.path)
 </script>

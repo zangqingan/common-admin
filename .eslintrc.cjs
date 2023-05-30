@@ -1,4 +1,6 @@
 /* eslint-env node */
+require('@rushstack/eslint-patch/modern-module-resolution')
+
 module.exports = {
   root: true,
   extends: [
@@ -17,6 +19,7 @@ module.exports = {
     'handle-callback-err': 'off',
     'vue/valid-define-emits': 'off',
     'no-unused-vars': 'off',
+    'vue/no-unused-vars': 'off',
     'vue/no-mutating-props': 'off',
     'prettier/prettier': [
       'error',
@@ -117,7 +120,8 @@ module.exports = {
     'no-delete-var': 2,
     'no-dupe-args': 2,
     'no-dupe-class-members': 2,
-    'no-dupe-keys': 2,
+    'no-dupe-keys': 1,
+    'vue/no-dupe-keys': 1,
     'no-duplicate-case': 2,
     'no-empty-character-class': 2,
     'no-empty-pattern': 2,
@@ -186,7 +190,7 @@ module.exports = {
         defaultAssignment: false
       }
     ],
-    'no-unreachable': 2,
+    'no-unreachable': 'off',
     'no-unsafe-finally': 2,
     'no-useless-call': 2,
     'no-useless-computed-key': 2,
@@ -260,7 +264,7 @@ module.exports = {
     'yield-star-spacing': [2, 'both'],
     yoda: [2, 'never'],
     'prefer-const': 1,
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     // 'object-curly-spacing': [
     //   2,
     //   'always',

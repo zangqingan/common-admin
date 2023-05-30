@@ -95,21 +95,19 @@ const sideTheme = computed(() => settingsStore.sideTheme)
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 48px;
+      height: 20px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin-right: 8px;
+      margin-top: -4px;
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
-      font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
-      vertical-align: middle;
+      font-size: 18px;
+      font-family: AlimamaShuHeiTi;
+      color: #ffffff;
     }
   }
 

@@ -4,13 +4,12 @@
       :model="queryParams"
       ref="queryRef"
       :inline="true"
-      v-show="showSearch">
+      v-show="showSearch"
+      label-width="68px">
       <el-form-item
         label="字典名称"
         prop="dictType">
-        <el-select
-          v-model="queryParams.dictType"
-          style="width: 200px">
+        <el-select v-model="queryParams.dictType">
           <el-option
             v-for="item in typeOptions"
             :key="item.dictId"
@@ -25,7 +24,6 @@
           v-model="queryParams.dictLabel"
           placeholder="请输入字典标签"
           clearable
-          style="width: 200px"
           @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item
@@ -34,8 +32,7 @@
         <el-select
           v-model="queryParams.status"
           placeholder="数据状态"
-          clearable
-          style="width: 200px">
+          clearable>
           <el-option
             v-for="dict in sys_normal_disable"
             :key="dict.value"
@@ -180,20 +177,18 @@
       <el-table-column
         label="操作"
         align="center"
-        width="160"
+        width="150"
         class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:dict:edit']"
             >修改</el-button
           >
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:dict:remove']"

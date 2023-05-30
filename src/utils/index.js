@@ -1,4 +1,4 @@
-import { parseTime } from './ruoyi'
+// import { parseTime } from '@/ruoyi'
 
 /**
  * 表格时间格式化
@@ -25,43 +25,43 @@ export function formatDate(cellValue) {
  * @param {string} option
  * @returns {string}
  */
-export function formatTime(time, option) {
-  if (('' + time).length === 10) {
-    time = parseInt(time) * 1000
-  } else {
-    time = +time
-  }
-  const d = new Date(time)
-  const now = Date.now()
+// export function formatTime(time, option) {
+//   if (('' + time).length === 10) {
+//     time = parseInt(time) * 1000
+//   } else {
+//     time = +time
+//   }
+//   const d = new Date(time)
+//   const now = Date.now()
 
-  const diff = (now - d) / 1000
+//   const diff = (now - d) / 1000
 
-  if (diff < 30) {
-    return '刚刚'
-  } else if (diff < 3600) {
-    // less 1 hour
-    return Math.ceil(diff / 60) + '分钟前'
-  } else if (diff < 3600 * 24) {
-    return Math.ceil(diff / 3600) + '小时前'
-  } else if (diff < 3600 * 24 * 2) {
-    return '1天前'
-  }
-  if (option) {
-    return parseTime(time, option)
-  } else {
-    return (
-      d.getMonth() +
-      1 +
-      '月' +
-      d.getDate() +
-      '日' +
-      d.getHours() +
-      '时' +
-      d.getMinutes() +
-      '分'
-    )
-  }
-}
+//   if (diff < 30) {
+//     return '刚刚'
+//   } else if (diff < 3600) {
+//     // less 1 hour
+//     return Math.ceil(diff / 60) + '分钟前'
+//   } else if (diff < 3600 * 24) {
+//     return Math.ceil(diff / 3600) + '小时前'
+//   } else if (diff < 3600 * 24 * 2) {
+//     return '1天前'
+//   }
+//   if (option) {
+//     return parseTime(time, option)
+//   } else {
+//     return (
+//       d.getMonth() +
+//       1 +
+//       '月' +
+//       d.getDate() +
+//       '日' +
+//       d.getHours() +
+//       '时' +
+//       d.getMinutes() +
+//       '分'
+//     )
+//   }
+// }
 
 /**
  * @param {string} url
@@ -389,4 +389,20 @@ export function camelCase(str) {
 
 export function isNumberStr(str) {
   return /^[+-]?(0|([1-9]\d*))(\.\d+)?$/g.test(str)
+}
+export function findStrIndex(str, cha, num) {
+  let x = str.indexOf(cha)
+  for (let i = 0; i < num - 1; i++) {
+    x = str.indexOf(cha, x + 1)
+  }
+  return x
+}
+
+// 获取路由地址的第一级路由
+export function getRouteFirstPath(path, isTopNav = false) {
+  const index = findStrIndex(path, '/', 2)
+  if (isTopNav && index > 0) {
+    return path.substring(0, index)
+  }
+  return path
 }

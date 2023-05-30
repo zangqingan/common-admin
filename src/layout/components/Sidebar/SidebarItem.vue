@@ -3,16 +3,16 @@
     <template
       v-if="
         hasOneShowingChild(item.children, item) &&
-        (!onlyOneChild.children || onlyOneChild.noShowingChildren) &&
-        !item.alwaysShow
+        (!onlyOneChild.children || onlyOneChild.noShowingChildren)
       ">
       <app-link
         v-if="onlyOneChild.meta"
         :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
         <el-menu-item
-          :index="resolvePath(onlyOneChild.path)"
+          :index="getRouteFirstPath(resolvePath(onlyOneChild.path), isTopNav)"
           :class="{ 'submenu-title-noDropdown': !isNest }">
           <svg-icon
+            class="menu-svg-icon"
             :icon-class="
               onlyOneChild.meta.icon || (item.meta && item.meta.icon)
             " />
@@ -35,7 +35,9 @@
       <template
         v-if="item.meta"
         #title>
-        <svg-icon :icon-class="item.meta && item.meta.icon" />
+        <svg-icon
+          class="menu-svg-icon"
+          :icon-class="item.meta && item.meta.icon" />
         <span
           class="menu-title"
           :title="hasTitle(item.meta.title)"
@@ -48,6 +50,7 @@
         :key="child.path"
         :is-nest="true"
         :item="child"
+        :isTopNav="isTopNav"
         :base-path="resolvePath(child.path)"
         class="nest-menu" />
     </el-sub-menu>
@@ -58,9 +61,9 @@
 import { isExternal } from '@/utils/validate'
 import AppLink from './Link'
 import { getNormalPath } from '@/utils/ruoyi'
+import { getRouteFirstPath } from '@/utils/index.js'
 
 const props = defineProps({
-  // route object
   item: {
     type: Object,
     required: true
@@ -72,6 +75,10 @@ const props = defineProps({
   basePath: {
     type: String,
     default: ''
+  },
+  isTopNav: {
+    type: Boolean,
+    default: false
   }
 })
 

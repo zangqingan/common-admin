@@ -12,7 +12,6 @@
           v-model="queryParams.menuName"
           placeholder="请输入菜单名称"
           clearable
-          style="width: 200px"
           @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item
@@ -21,8 +20,7 @@
         <el-select
           v-model="queryParams.status"
           placeholder="菜单状态"
-          clearable
-          style="width: 200px">
+          clearable>
           <el-option
             v-for="dict in sys_normal_disable"
             :key="dict.value"
@@ -118,7 +116,6 @@
       <el-table-column
         label="创建时间"
         align="center"
-        width="160"
         prop="createTime">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -127,28 +124,25 @@
       <el-table-column
         label="操作"
         align="center"
-        width="210"
+        width="200"
         class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:menu:edit']"
             >修改</el-button
           >
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Plus"
             @click="handleAdd(scope.row)"
             v-hasPermi="['system:menu:add']"
             >新增</el-button
           >
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:menu:remove']"
@@ -212,7 +206,7 @@
                   <el-input
                     v-model="form.icon"
                     placeholder="点击选择图标"
-                    @blur="showSelectIcon"
+                    @click="showSelectIcon"
                     v-click-outside="hideSelectIcon"
                     readonly>
                     <template #prefix>
@@ -231,8 +225,7 @@
                 </template>
                 <icon-select
                   ref="iconSelectRef"
-                  @selected="selected"
-                  :active-icon="form.icon" />
+                  @selected="selected" />
               </el-popover>
             </el-form-item>
           </el-col>
@@ -484,6 +477,10 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data)
 
+watch(showChooseIcon, (newName, oldName) => {
+  console.log('showChooseIcon', newName)
+})
+
 /** 查询菜单列表 */
 function getList() {
   loading.value = true
@@ -529,11 +526,13 @@ function showSelectIcon() {
 }
 /** 选择图标 */
 function selected(name) {
+  console.log('selected')
   form.value.icon = name
   showChooseIcon.value = false
 }
 /** 图标外层点击隐藏下拉列表 */
 function hideSelectIcon(event) {
+  console.log('hideSelectIcon')
   var elem =
     event.relatedTarget ||
     event.srcElement ||

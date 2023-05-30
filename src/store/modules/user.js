@@ -5,10 +5,12 @@ import defAva from '@/assets/images/profile.jpg'
 const useUserStore = defineStore('user', {
   state: () => ({
     token: getToken(),
+    id: '',
     name: '',
     avatar: '',
     roles: [],
-    permissions: []
+    permissions: [],
+    dept: {}
   }),
   actions: {
     // 登录
@@ -34,6 +36,7 @@ const useUserStore = defineStore('user', {
       return new Promise((resolve, reject) => {
         getInfo()
           .then(res => {
+            console.log('getInfo')
             const user = res.user
             const avatar =
               user.avatar == '' || user.avatar == null
@@ -48,7 +51,9 @@ const useUserStore = defineStore('user', {
               this.roles = ['ROLE_DEFAULT']
             }
             this.name = user.userName
+            this.id = user.userId
             this.avatar = avatar
+            this.dept = user.dept
             resolve(res)
           })
           .catch(error => {

@@ -11,7 +11,12 @@
         :key="tag.path"
         :data-path="tag.path"
         :class="isActive(tag) ? 'active' : ''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+        :to="{
+          path: tag.path,
+          query: tag.query,
+          fullPath: tag.fullPath
+        }"
+        @click="switchRoute(tag.path)"
         class="tags-view-item"
         :style="activeStyle(tag)"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
@@ -75,8 +80,11 @@ const scrollPaneRef = ref(null)
 const { proxy } = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
-
-const visitedViews = computed(() => useTagsViewStore().visitedViews)
+const permissionStore = usePermissionStore()
+const visitedViews = computed(() => {
+  const len = useTagsViewStore().visitedViews.length
+  return useTagsViewStore().visitedViews.slice(len - 10 > 0 ? len - 10 : 0, len)
+})
 const routes = computed(() => usePermissionStore().routes)
 const theme = computed(() => useSettingsStore().theme)
 
@@ -96,6 +104,19 @@ onMounted(() => {
   addTags()
 })
 
+const switchRoute = path => {
+  const routeArr = route.path.split('/')
+  routeArr.shift()
+  const pathArr = path.split('/')
+  pathArr.shift()
+  if (
+    path !== route.path &&
+    routeArr[0] + routeArr[1] !== pathArr[0] + pathArr[1]
+  ) {
+    permissionStore.setSecondaryRoutes(path)
+  }
+}
+
 function isActive(r) {
   return r.path === route.path
 }
@@ -112,8 +133,8 @@ function isAffix(tag) {
 function isFirstView() {
   try {
     return (
-      selectedTag.value.fullPath === '/index' ||
-      selectedTag.value.fullPath === visitedViews.value[1].fullPath
+      selectedTag.value.fullPath === visitedViews.value[1].fullPath ||
+      selectedTag.value.fullPath === '/index'
     )
   } catch (err) {
     return false
@@ -228,6 +249,7 @@ function toLastView(visitedViews, view) {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView.fullPath)
+    permissionStore.setSecondaryRoutes(latestView.fullPath)
   } else {
     // now the default is to redirect to the home page if there is no tags-view,
     // you can adjust it according to your needs.
@@ -266,7 +288,7 @@ function handleScroll() {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
+  height: 40px;
   width: 100%;
   background: #fff;
   border-bottom: 1px solid #d8dce5;
@@ -284,7 +306,7 @@ function handleScroll() {
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
-      margin-top: 4px;
+      margin-top: 6px;
       &:first-of-type {
         margin-left: 15px;
       }
@@ -296,7 +318,7 @@ function handleScroll() {
         color: #fff;
         border-color: #42b983;
         &::before {
-          content: "";
+          content: '';
           background: #fff;
           display: inline-block;
           width: 8px;
@@ -332,7 +354,7 @@ function handleScroll() {
 }
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 //reset element css of el-icon-close
 .tags-view-wrapper {
   .tags-view-item {
@@ -344,6 +366,8 @@ function handleScroll() {
       text-align: center;
       transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       transform-origin: 100% 50%;
+      position: relative;
+      top: -1px;
       &:before {
         transform: scale(0.6);
         display: inline-block;

@@ -151,8 +151,7 @@
       <el-table-column
         label="参数键值"
         align="center"
-        prop="configValue"
-        :show-overflow-tooltip="true" />
+        prop="configValue" />
       <el-table-column
         label="系统内置"
         align="center"
@@ -184,16 +183,14 @@
         class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:config:edit']"
             >修改</el-button
           >
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:config:remove']"

@@ -12,7 +12,7 @@ export default {
     var url =
       baseURL +
       '/common/download?fileName=' +
-      encodeURIComponent(name) +
+      encodeURI(name) +
       '&delete=' +
       isDelete
     axios({
@@ -20,11 +20,11 @@ export default {
       url: url,
       responseType: 'blob',
       headers: { Authorization: 'Bearer ' + getToken() }
-    }).then(res => {
-      const isBlob = blobValidate(res.data)
-      if (isBlob) {
+    }).then(async res => {
+      const isLogin = await blobValidate(res.data)
+      if (isLogin) {
         const blob = new Blob([res.data])
-        this.saveAs(blob, decodeURIComponent(res.headers['download-filename']))
+        this.saveAs(blob, decodeURI(res.headers['download-filename']))
       } else {
         this.printErrMsg(res.data)
       }
@@ -32,34 +32,32 @@ export default {
   },
   resource(resource) {
     var url =
-      baseURL +
-      '/common/download/resource?resource=' +
-      encodeURIComponent(resource)
+      baseURL + '/common/download/resource?resource=' + encodeURI(resource)
     axios({
       method: 'get',
       url: url,
       responseType: 'blob',
       headers: { Authorization: 'Bearer ' + getToken() }
-    }).then(res => {
-      const isBlob = blobValidate(res.data)
-      if (isBlob) {
+    }).then(async res => {
+      const isLogin = await blobValidate(res.data)
+      if (isLogin) {
         const blob = new Blob([res.data])
-        this.saveAs(blob, decodeURIComponent(res.headers['download-filename']))
+        this.saveAs(blob, decodeURI(res.headers['download-filename']))
       } else {
         this.printErrMsg(res.data)
       }
     })
   },
-  zip(url, name) {
-    var url = baseURL + url
+  zip(paramUrl, name) {
+    var url = baseURL + paramUrl
     axios({
       method: 'get',
       url: url,
       responseType: 'blob',
       headers: { Authorization: 'Bearer ' + getToken() }
-    }).then(res => {
-      const isBlob = blobValidate(res.data)
-      if (isBlob) {
+    }).then(async res => {
+      const isLogin = await blobValidate(res.data)
+      if (isLogin) {
         const blob = new Blob([res.data], { type: 'application/zip' })
         this.saveAs(blob, name)
       } else {

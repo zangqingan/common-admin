@@ -46,15 +46,11 @@
         style="width: 308px">
         <el-date-picker
           v-model="dateRange"
-          value-format="YYYY-MM-DD HH:mm:ss"
+          value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
           start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          :default-time="[
-            new Date(2000, 1, 1, 0, 0, 0),
-            new Date(2000, 1, 1, 23, 59, 59)
-          ]"></el-date-picker>
+          end-placeholder="结束日期"></el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button
@@ -176,8 +172,7 @@
       <el-table-column
         label="描述"
         align="center"
-        prop="msg"
-        :show-overflow-tooltip="true" />
+        prop="msg" />
       <el-table-column
         label="访问时间"
         align="center"

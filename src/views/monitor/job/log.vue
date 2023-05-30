@@ -184,8 +184,7 @@
         class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="View"
             @click="handleView(scope.row)"
             v-hasPermi="['monitor:job:query']"
@@ -364,7 +363,7 @@ function handleExport() {
 }
 
 ;(() => {
-  const jobId = route.params && route.params.jobId
+  const jobId = route.query.jobId
   if (jobId !== undefined && jobId != 0) {
     getJob(jobId).then(response => {
       queryParams.value.jobName = response.data.jobName

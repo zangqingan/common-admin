@@ -36,12 +36,8 @@ export default {
     if (obj === undefined) {
       return useTagsViewStore()
         .delView(router.currentRoute.value)
-        .then(({ visitedViews }) => {
-          const latestView = visitedViews.slice(-1)[0]
-          if (latestView) {
-            return router.push(latestView.fullPath)
-          }
-          return router.push('/')
+        .then(({ lastPath }) => {
+          return router.push(lastPath || '/index')
         })
     }
     return useTagsViewStore().delView(obj)

@@ -94,3 +94,61 @@
 .el-dropdown .el-dropdown-link{
   color: var(--el-color-primary) !important;
 }
+.el-form-item__label {
+  display: inline-flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  // font-size: 14px;
+  font-family: AlibabaPuHuiTi_2_55_Regular!important;
+  color: #333333!important;
+}
+.el-button.el-button--default {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  font-family: AlibabaPuHuiTi_2_55_Regular;
+  // color: #333333!important;
+}
+// 弹框样式
+.el-dialog__header {
+  padding: 15px 20px !important;
+  border-bottom: 1px solid #dddddd;
+  margin-right: 0 !important;
+  font-size: 18px;
+  font-family: AlibabaPuHuiTi_2_65_Medium;
+  color: #333333;
+  .el-dialog__title {
+    font-size: 18px;
+    font-family: AlibabaPuHuiTi_2_65_Medium;
+    color: #333333;
+  }
+  .el-dialog__headerbtn {
+    top: 0;
+  }
+}
+.el-dialog__footer {
+  padding: 12px 20px !important;
+  border-top: 1px solid #dddddd;
+  .el-button > span {
+    font-family: SourceHanSansCN-Regular, SourceHanSansCN;
+  }
+}
+.el-dialog__body {
+  padding: 10px 20px !important;
+  max-height: 708px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  font-family: AlibabaPuHuiTi_2_55_Regular;
+  color: #333333;
+}
+// 折叠面板不要border
+.el-collapse {
+  border: none !important;
+}
+.el-collapse-item__wrap {
+  border: none !important;
+}
+.el-collapse-item__content {
+  padding-bottom: 0 !important;
+}

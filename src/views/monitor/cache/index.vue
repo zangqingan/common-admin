@@ -5,10 +5,7 @@
         :span="24"
         class="card-box">
         <el-card>
-          <template #header
-            ><Monitor style="width: 1em; height: 1em; vertical-align: middle" />
-            <span style="vertical-align: middle">基本信息</span></template
-          >
+          <template #header><span>基本信息</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <table
               cellspacing="0"
@@ -33,7 +30,7 @@
                       class="cell"
                       v-if="cache.info">
                       {{
-                        cache.info.redis_mode == "standalone" ? "单机" : "集群"
+                        cache.info.redis_mode == 'standalone' ? '单机' : '集群'
                       }}
                     </div>
                   </td>
@@ -110,7 +107,7 @@
                     <div
                       class="cell"
                       v-if="cache.info">
-                      {{ cache.info.aof_enabled == "0" ? "否" : "是" }}
+                      {{ cache.info.aof_enabled == '0' ? '否' : '是' }}
                     </div>
                   </td>
                   <td class="el-table__cell is-leaf">
@@ -156,11 +153,7 @@
         :span="12"
         class="card-box">
         <el-card>
-          <template #header
-            ><PieChart
-              style="width: 1em; height: 1em; vertical-align: middle" />
-            <span style="vertical-align: middle">命令统计</span></template
-          >
+          <template #header><span>命令统计</span></template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <div
               ref="commandstats"
@@ -173,11 +166,9 @@
         :span="12"
         class="card-box">
         <el-card>
-          <template #header
-            ><Odometer
-              style="width: 1em; height: 1em; vertical-align: middle" />
-            <span style="vertical-align: middle">内存信息</span></template
-          >
+          <template #header>
+            <span>内存信息</span>
+          </template>
           <div class="el-table el-table--enable-row-hover el-table--medium">
             <div
               ref="usedmemory"

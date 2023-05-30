@@ -4,7 +4,8 @@
       :model="queryParams"
       ref="queryRef"
       :inline="true"
-      v-show="showSearch">
+      v-show="showSearch"
+      label-width="68px">
       <el-form-item
         label="岗位编码"
         prop="postCode">
@@ -12,7 +13,6 @@
           v-model="queryParams.postCode"
           placeholder="请输入岗位编码"
           clearable
-          style="width: 200px"
           @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item
@@ -22,7 +22,6 @@
           v-model="queryParams.postName"
           placeholder="请输入岗位名称"
           clearable
-          style="width: 200px"
           @keyup.enter="handleQuery" />
       </el-form-item>
       <el-form-item
@@ -31,8 +30,7 @@
         <el-select
           v-model="queryParams.status"
           placeholder="岗位状态"
-          clearable
-          style="width: 200px">
+          clearable>
           <el-option
             v-for="dict in sys_normal_disable"
             :key="dict.value"
@@ -150,21 +148,18 @@
       </el-table-column>
       <el-table-column
         label="操作"
-        width="180"
         align="center"
         class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:post:edit']"
             >修改</el-button
           >
           <el-button
-            link
-            type="primary"
+            type="text"
             icon="Delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:post:remove']"

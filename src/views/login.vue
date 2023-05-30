@@ -1,66 +1,42 @@
 <template>
   <div class="login">
+    <div class="login-title">青安科技有限责任公司</div>
     <el-form
       ref="loginRef"
+      label-position="top"
       :model="loginForm"
       :rules="loginRules"
-      class="login-form">
-      <h3 class="title">通用后台管理系统</h3>
+      class="login-form"
+      hide-required-asterisk>
+      <h3 class="title">Hi，欢迎登录！</h3>
       <el-form-item prop="username">
         <el-input
           v-model="loginForm.username"
-          type="text"
+          text
           size="large"
-          auto-complete="off"
-          placeholder="账号">
-          <template #prefix
-            ><svg-icon
-              icon-class="user"
-              class="el-input__icon input-icon"
-          /></template>
+          autocomplete="off"
+          placeholder="用户名">
         </el-input>
       </el-form-item>
       <el-form-item prop="password">
         <el-input
           v-model="loginForm.password"
-          type="password"
+          :type="[flag ? 'text' : 'password']"
           size="large"
-          auto-complete="off"
+          autocomplete="new-password"
           placeholder="密码"
           @keyup.enter="handleLogin">
-          <template #prefix
-            ><svg-icon
-              icon-class="password"
-              class="el-input__icon input-icon"
-          /></template>
+          <template #suffix>
+            <i
+              :class="[flag ? 'el-icon-minus' : 'el-icon-view']"
+              autocomplete="auto"
+              @click="flag = !flag"></i>
+          </template>
         </el-input>
-      </el-form-item>
-      <el-form-item
-        prop="code"
-        v-if="captchaEnabled">
-        <el-input
-          v-model="loginForm.code"
-          size="large"
-          auto-complete="off"
-          placeholder="验证码"
-          style="width: 63%"
-          @keyup.enter="handleLogin">
-          <template #prefix
-            ><svg-icon
-              icon-class="validCode"
-              class="el-input__icon input-icon"
-          /></template>
-        </el-input>
-        <div class="login-code">
-          <img
-            :src="codeUrl"
-            @click="getCode"
-            class="login-code-img" />
-        </div>
       </el-form-item>
       <el-checkbox
         v-model="loginForm.rememberMe"
-        style="margin: 0px 0px 25px 0px"
+        style="margin-bottom: 40px"
         >记住密码</el-checkbox
       >
       <el-form-item style="width: 100%">
@@ -68,9 +44,9 @@
           :loading="loading"
           size="large"
           type="primary"
-          style="width: 100%"
+          class="login-btn"
           @click.prevent="handleLogin">
-          <span v-if="!loading">登 录</span>
+          <span v-if="!loading">登录</span>
           <span v-else>登 录 中...</span>
         </el-button>
         <div
@@ -86,7 +62,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2023 ruoyi.vip All Rights Reserved.</span>
+      <span> © Copyright Reserved 青安科技有限责任公司版权所有</span>
     </div>
   </div>
 </template>
@@ -100,7 +76,7 @@ import useUserStore from '@/store/modules/user'
 const userStore = useUserStore()
 const router = useRouter()
 const { proxy } = getCurrentInstance()
-
+const flag = ref(false)
 const loginForm = ref({
   username: 'admin',
   password: 'admin123',
@@ -110,7 +86,7 @@ const loginForm = ref({
 })
 
 const loginRules = {
-  username: [{ required: true, trigger: 'blur', message: '请输入您的账号' }],
+  username: [{ required: true, trigger: 'blur', message: '请输入您的用户名' }],
   password: [{ required: true, trigger: 'blur', message: '请输入您的密码' }],
   code: [{ required: true, trigger: 'change', message: '请输入验证码' }]
 }
@@ -180,35 +156,75 @@ function getCookie() {
   }
 }
 
-getCode()
+// getCode();
 getCookie()
 </script>
 
 <style lang="scss" scoped>
 .login {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   height: 100%;
-  background-image: url("@/assets/images/login-background.jpg");
+  background-image: url('@/assets/images/login/login-bg.jpg');
   background-size: cover;
+  position: relative;
+}
+.login-title {
+  position: absolute;
+  top: 80px;
+  left: 100px;
+  color: #fff;
+  font-size: 32px;
 }
 .title {
-  margin: 0px auto 30px auto;
-  text-align: center;
-  color: #707070;
+  margin: 0px auto 48px auto;
+  text-align: left;
+  font-size: 24px;
+  font-family: SourceHanSansCN-Bold, SourceHanSansCN;
+  font-weight: bold;
+  color: #2d2f30;
 }
 
 .login-form {
-  border-radius: 6px;
+  border-radius: 8px;
   background: #ffffff;
-  width: 400px;
-  padding: 25px 25px 5px 25px;
+  width: 420px;
+  margin-right: 180px;
+  padding: 48px 32px 18px 32px;
   .el-input {
-    height: 40px;
-    input {
-      height: 40px;
+    height: 48px;
+    :deep(.el-input__inner) {
+      height: 48px;
     }
+    :deep(.el-input__suffix) {
+      align-items: center;
+    }
+    :deep(.el-form-item.is-error, .el-input__inner) {
+      box-shadow: 0 0 0 1px #f66a4c inset;
+    }
+  }
+  :deep(.el-form-item--default) {
+    margin-bottom: 20px;
+  }
+  :deep(.el-form-item__error) {
+    line-height: 18px;
+    color: #f66a4c;
+  }
+
+  .el-icon-minus {
+    width: 24px;
+    height: 24px;
+    background: url('@/assets/images/login/password2.png') no-repeat center
+      center;
+    cursor: pointer;
+  }
+  .el-icon-view {
+    width: 24px;
+    height: 24px;
+    background: url('@/assets/images/login/password1.png') no-repeat center
+      center;
+    cursor: pointer;
   }
   .input-icon {
     height: 39px;
@@ -230,17 +246,22 @@ getCookie()
     vertical-align: middle;
   }
 }
-.el-login-footer {
-  height: 40px;
-  line-height: 40px;
-  position: fixed;
-  bottom: 0;
+.login-btn {
   width: 100%;
+  background-color: #428aff;
+  height: 56px;
+}
+.el-login-footer {
+  width: 100%;
+  height: 16px;
+  font-size: 16px;
+  font-family: SourceHanSansCN-Regular, SourceHanSansCN;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 24px;
+  position: fixed;
+  bottom: 48px;
   text-align: center;
-  color: #fff;
-  font-family: Arial;
-  font-size: 12px;
-  letter-spacing: 1px;
 }
 .login-code-img {
   height: 40px;
