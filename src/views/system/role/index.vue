@@ -4,7 +4,8 @@
       :model="queryParams"
       ref="queryRef"
       v-show="showSearch"
-      :inline="true">
+      :inline="true"
+      label-width="68px">
       <el-form-item
         label="角色名称"
         prop="roleName">
@@ -172,7 +173,8 @@
             placement="top"
             v-if="scope.row.roleId !== 1">
             <el-button
-              type="text"
+              link
+              type="primary"
               icon="Edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['system:role:edit']"></el-button>
@@ -182,7 +184,8 @@
             placement="top"
             v-if="scope.row.roleId !== 1">
             <el-button
-              type="text"
+              link
+              type="primary"
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['system:role:remove']"></el-button>
@@ -192,7 +195,8 @@
             placement="top"
             v-if="scope.row.roleId !== 1">
             <el-button
-              type="text"
+              link
+              type="primary"
               icon="CircleCheck"
               @click="handleDataScope(scope.row)"
               v-hasPermi="['system:role:edit']"></el-button>
@@ -202,7 +206,8 @@
             placement="top"
             v-if="scope.row.roleId !== 1">
             <el-button
-              type="text"
+              link
+              type="primary"
               icon="User"
               @click="handleAuthUser(scope.row)"
               v-hasPermi="['system:role:edit']"></el-button>

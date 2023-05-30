@@ -20,7 +20,6 @@ const fileUrl = import.meta.env.VITE_APP_FILE_API
 const { proxy } = getCurrentInstance()
 // 编辑器相关
 const editorRef = shallowRef()
-let a = 10
 const toolbarConfig = {}
 const editorConfig = {
   MENU_CONF: {

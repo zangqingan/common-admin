@@ -127,7 +127,8 @@
         class-name="small-padding fixed-width">
         <template #default="scope">
           <el-button
-            type="text"
+            link
+            type="primary"
             icon="CircleClose"
             @click="cancelAuthUser(scope.row)"
             v-hasPermi="['system:role:remove']"

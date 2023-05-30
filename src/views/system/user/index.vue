@@ -20,6 +20,7 @@
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             ref="deptTreeRef"
+            node-key="id"
             highlight-current
             default-expand-all
             @node-click="handleNodeClick" />
@@ -225,7 +226,7 @@
           <el-table-column
             label="操作"
             align="center"
-            width="250"
+            width="150"
             class-name="small-padding fixed-width">
             <template #default="scope">
               <el-tooltip
@@ -233,7 +234,8 @@
                 placement="top"
                 v-if="scope.row.userId !== 1">
                 <el-button
-                  text
+                  link
+                  type="primary"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:user:edit']"></el-button>
@@ -243,7 +245,8 @@
                 placement="top"
                 v-if="scope.row.userId !== 1">
                 <el-button
-                  text
+                  link
+                  type="primary"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['system:user:remove']"></el-button>
@@ -253,7 +256,8 @@
                 placement="top"
                 v-if="scope.row.userId !== 1">
                 <el-button
-                  text
+                  link
+                  type="primary"
                   icon="Key"
                   @click="handleResetPwd(scope.row)"
                   v-hasPermi="['system:user:resetPwd']"></el-button>
@@ -263,7 +267,8 @@
                 placement="top"
                 v-if="scope.row.userId !== 1">
                 <el-button
-                  text
+                  link
+                  type="primary"
                   icon="CircleCheck"
                   @click="handleAuthRole(scope.row)"
                   v-hasPermi="['system:user:edit']"></el-button>
@@ -315,6 +320,8 @@
                 check-strictly />
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item
               label="手机号码"
@@ -335,10 +342,11 @@
                 maxlength="50" />
             </el-form-item>
           </el-col>
-          <el-col
-            :span="12"
-            v-if="form.userId == undefined">
+        </el-row>
+        <el-row>
+          <el-col :span="12">
             <el-form-item
+              v-if="form.userId == undefined"
               label="用户名称"
               prop="userName">
               <el-input
@@ -347,10 +355,9 @@
                 maxlength="30" />
             </el-form-item>
           </el-col>
-          <el-col
-            :span="12"
-            v-if="form.userId == undefined">
+          <el-col :span="12">
             <el-form-item
+              v-if="form.userId == undefined"
               label="用户密码"
               prop="password">
               <el-input
@@ -361,6 +368,8 @@
                 show-password />
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
             <el-form-item label="用户性别">
               <el-select
@@ -386,10 +395,10 @@
               </el-radio-group>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="12">
-            <el-form-item
-              label="岗位"
-              prop="postIds">
+            <el-form-item label="岗位">
               <el-select
                 v-model="form.postIds"
                 multiple
@@ -418,6 +427,8 @@
               </el-select>
             </el-form-item>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :span="24">
             <el-form-item label="备注">
               <el-input
@@ -491,7 +502,7 @@
 </template>
 
 <script setup name="User">
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/utils/auth';
 import {
   changeUserStatus,
   listUser,
@@ -505,10 +516,7 @@ import {
 
 const router = useRouter()
 const { proxy } = getCurrentInstance()
-const { sys_normal_disable, sys_user_sex } = proxy.useDict(
-  'sys_normal_disable',
-  'sys_user_sex'
-)
+const { sys_normal_disable, sys_user_sex } = proxy.useDict('sys_normal_disable', 'sys_user_sex');
 
 const userList = ref([])
 const open = ref(false)
@@ -518,14 +526,14 @@ const ids = ref([])
 const single = ref(true)
 const multiple = ref(true)
 const total = ref(0)
-const title = ref('')
+const title = ref('');
 const dateRange = ref([])
-const deptName = ref('')
+const deptName = ref('');
 const deptOptions = ref(undefined)
-const initPassword = ref('Aa123456')
+const initPassword = ref(undefined)
 const postOptions = ref([])
 const roleOptions = ref([])
-/** * 用户导入参数 */
+/*** 用户导入参数 */
 const upload = reactive({
   // 是否显示弹出层（用户导入）
   open: false,
@@ -590,9 +598,7 @@ const data = reactive({
         trigger: ['blur', 'change']
       }
     ],
-    postIds: [{ required: true, message: '岗位不能为空', trigger: 'blur' }],
     phonenumber: [
-      { required: true, message: '手机号码不能为空', trigger: 'blur' },
       {
         pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/,
         message: '请输入正确的手机号码',
@@ -608,7 +614,7 @@ const { queryParams, form, rules } = toRefs(data)
 const filterNode = (value, data) => {
   if (!value) return true
   return data.label.indexOf(value) !== -1
-}
+};
 /** 根据名称筛选部门树 */
 watch(deptName, val => {
   proxy.$refs['deptTreeRef'].filter(val)
@@ -632,18 +638,20 @@ function getList() {
 function handleNodeClick(data) {
   queryParams.value.deptId = data.id
   handleQuery()
-}
+};
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1
   getList()
-}
+};
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = []
-  proxy.resetForm('queryRef')
+  proxy.resetForm('queryRef');
+  queryParams.value.deptId = undefined
+  proxy.$refs.deptTreeRef.setCurrentKey(null)
   handleQuery()
-}
+};
 /** 删除按钮操作 */
 function handleDelete(row) {
   const userIds = row.userId || ids.value
@@ -660,9 +668,7 @@ function handleDelete(row) {
 }
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download(
-    'system/user/export',
-    {
+  proxy.download('system/user/export', {
       ...queryParams.value
     },
     `user_${new Date().getTime()}.xlsx`
@@ -670,7 +676,7 @@ function handleExport() {
 }
 /** 用户状态修改  */
 function handleStatusChange(row) {
-  const text = row.status === '0' ? '启用' : '停用'
+  const text = row.status === "0" ? "启用" : "停用";
   proxy.$modal
     .confirm('确认要"' + text + '""' + row.userName + '"用户吗?')
     .then(function () {
@@ -688,10 +694,10 @@ function handleCommand(command, row) {
   switch (command) {
     case 'handleResetPwd':
       handleResetPwd(row)
-      break
+      break;
     case 'handleAuthRole':
       handleAuthRole(row)
-      break
+      break;
     default:
       break
   }
@@ -700,7 +706,7 @@ function handleCommand(command, row) {
 function handleAuthRole(row) {
   const userId = row.userId
   router.push('/system/user-auth/role/' + userId)
-}
+};
 /** 重置密码按钮操作 */
 function handleResetPwd(row) {
   proxy
@@ -723,24 +729,22 @@ function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.userId)
   single.value = selection.length != 1
   multiple.value = !selection.length
-}
+};
 /** 导入按钮操作 */
 function handleImport() {
-  upload.title = '用户导入'
+  upload.title = '用户导入';
   upload.open = true
-}
+};
 /** 下载模板操作 */
 function importTemplate() {
-  proxy.download(
-    'system/user/importTemplate',
-    {},
+  proxy.download('system/user/importTemplate', {
     `user_template_${new Date().getTime()}.xlsx`
   )
 }
 /** 文件上传中处理 */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true
-}
+};
 /** 文件上传成功处理 */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false
@@ -754,11 +758,11 @@ const handleFileSuccess = (response, file, fileList) => {
     { dangerouslyUseHTMLString: true }
   )
   getList()
-}
+};
 /** 提交上传文件 */
 function submitFileForm() {
   proxy.$refs['uploadRef'].submit()
-}
+};
 /** 重置操作表单 */
 function reset() {
   form.value = {
@@ -775,13 +779,13 @@ function reset() {
     postIds: [],
     roleIds: []
   }
-  proxy.resetForm('userRef')
+  proxy.resetForm('userRef');
 }
 /** 取消按钮 */
 function cancel() {
   open.value = false
   reset()
-}
+};
 /** 新增按钮操作 */
 function handleAdd() {
   reset()
@@ -789,7 +793,7 @@ function handleAdd() {
     postOptions.value = response.posts
     roleOptions.value = response.roles
     open.value = true
-    title.value = '添加用户'
+    title.value = '添加用户';
     form.value.password = initPassword.value
   })
 }
@@ -804,30 +808,30 @@ function handleUpdate(row) {
     form.value.postIds = response.postIds
     form.value.roleIds = response.roleIds
     open.value = true
-    title.value = '修改用户'
-    form.password = ''
+    title.value = '修改用户';
+    form.password = '';
   })
-}
+};
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs['userRef'].validate(valid => {
     if (valid) {
       if (form.value.userId != undefined) {
         updateUser(form.value).then(response => {
-          proxy.$modal.msgSuccess('修改成功')
+          proxy.$modal.msgSuccess('修改成功');
           open.value = false
           getList()
         })
       } else {
         addUser(form.value).then(response => {
-          proxy.$modal.msgSuccess('新增成功')
+          proxy.$modal.msgSuccess('新增成功');
           open.value = false
           getList()
         })
       }
     }
   })
-}
+};
 
 getDeptTree()
 getList()

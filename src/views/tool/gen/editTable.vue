@@ -80,6 +80,7 @@
             <template #default="scope">
               <el-checkbox
                 true-label="1"
+                false-label="0"
                 v-model="scope.row.isInsert"></el-checkbox>
             </template>
           </el-table-column>
@@ -89,6 +90,7 @@
             <template #default="scope">
               <el-checkbox
                 true-label="1"
+                false-label="0"
                 v-model="scope.row.isEdit"></el-checkbox>
             </template>
           </el-table-column>
@@ -98,6 +100,7 @@
             <template #default="scope">
               <el-checkbox
                 true-label="1"
+                false-label="0"
                 v-model="scope.row.isList"></el-checkbox>
             </template>
           </el-table-column>
@@ -107,6 +110,7 @@
             <template #default="scope">
               <el-checkbox
                 true-label="1"
+                false-label="0"
                 v-model="scope.row.isQuery"></el-checkbox>
             </template>
           </el-table-column>
@@ -148,6 +152,7 @@
             <template #default="scope">
               <el-checkbox
                 true-label="1"
+                false-label="0"
                 v-model="scope.row.isRequired"></el-checkbox>
             </template>
           </el-table-column>

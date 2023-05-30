@@ -8,13 +8,7 @@ export function listDept(query) {
     params: query
   })
 }
-// 查询最底层部门列表
-export function bottomListDept() {
-  return request({
-    url: '/system/dept/bottom',
-    method: 'get'
-  })
-}
+
 // 查询部门列表（排除节点）
 export function listDeptExcludeChild(deptId) {
   return request({

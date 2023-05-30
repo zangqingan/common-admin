@@ -4,19 +4,17 @@ import { getRouters } from '@/api/menu'
 import Layout from '@/layout/index'
 import ParentView from '@/components/ParentView'
 import InnerLink from '@/layout/components/InnerLink'
-import useAppStore from '@/store/modules/app'
+
 // 匹配views里面所有的.vue文件
 const modules = import.meta.glob('./../../views/**/*.vue')
-let sidebarRoutersMap = {}
-let sidebarRouterParentMap = {}
+
 const usePermissionStore = defineStore('permission', {
   state: () => ({
     routes: [],
     addRoutes: [],
     defaultRoutes: [],
     topbarRouters: [],
-    sidebarRouters: [],
-    secondaryRoutes: []
+    sidebarRouters: []
   }),
   actions: {
     setRoutes(routes) {
@@ -31,8 +29,6 @@ const usePermissionStore = defineStore('permission', {
     },
     setSidebarRouters(routes) {
       this.sidebarRouters = routes
-      // 组装两个map, 一个是sideMap 一个是第二级之后的所有路由为key, 第二级路由为value的map
-      sidebarRoutersMap = buildSideBarRouterMap(this.sidebarRouters)
     },
     generateRoutes(roles) {
       return new Promise(resolve => {
@@ -55,57 +51,10 @@ const usePermissionStore = defineStore('permission', {
           resolve(rewriteRoutes)
         })
       })
-    },
-    setSecondaryRoutes(path, isSecond) {
-      let secondaryRoutes
-      if (isSecond) {
-        secondaryRoutes = sidebarRoutersMap[path] || []
-      } else {
-        const parentPath = sidebarRouterParentMap[path]
-        secondaryRoutes = sidebarRoutersMap[parentPath] || []
-      }
-      this.secondaryRoutes = secondaryRoutes.filter(item => {
-        return (
-          item.path !== '/index' && item.redirect !== '/index' && !item.hidden
-        )
-      })
-      useAppStore().toggleSideBarHide(this.secondaryRoutes.length === 0)
     }
   }
 })
-function buildSideBarRouterMap(sidebarRouters) {
-  const map = {}
-  sidebarRouterParentMap = {}
-  sidebarRouters.forEach(firstLevel => {
-    const path = firstLevel.path
-    map[path] = firstLevel.children || []
-    if (firstLevel.children && firstLevel.children.length > 0) {
-      // 获取key. key为父router的path 和 子router的path的组装
-      buildParentMap(firstLevel.children, path, path)
-    }
-  })
-  return map
-}
-function buildParentMap(list, path, pathRoot) {
-  list.forEach(item => {
-    const path1 = buildPath(path, item.path)
-    item.fullPath = path1
-    sidebarRouterParentMap[path1] = pathRoot
-    if (item.children && item.children.length > 0) {
-      buildParentMap(item.children, path1, pathRoot)
-    }
-  })
-}
-function buildPath(path1, path2) {
-  // 如果path2 是/开头, 直接返回path2, 否则返回path1 + "/" + path2
-  if (path2.startsWith('/')) {
-    return path2
-  }
-  if (path1.startsWith('/')) {
-    return `${path1}/${path2}`
-  }
-  return `/${path1}/${path2}`
-}
+
 // 遍历后台传来的路由字符串，转换为组件对象
 function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
   return asyncRouterMap.filter(route => {

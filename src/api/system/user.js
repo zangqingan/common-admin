@@ -109,15 +109,6 @@ export function uploadAvatar(data) {
   })
 }
 
-// 头像上传
-export function commonUploadAvatar(data) {
-  return request({
-    url: '/common/upload',
-    method: 'post',
-    data: data
-  })
-}
-
 // 查询授权角色
 export function getAuthRole(userId) {
   return request({

@@ -4,11 +4,7 @@ import Cookies from 'js-cookie'
 
 import ElementPlus from 'element-plus'
 import locale from 'element-plus/lib/locale/lang/zh-cn' // 中文语言
-import dayjs from 'dayjs'
 
-import 'dayjs/locale/zh-cn'
-dayjs.locale('zh-cn')
-import '@/assets/styles/font.scss'
 import '@/assets/styles/index.scss' // global css
 
 import App from './App'
@@ -24,9 +20,6 @@ import { download } from '@/utils/request'
 import 'virtual:svg-icons-register'
 import SvgIcon from '@/components/SvgIcon'
 import elementIcons from '@/components/SvgIcon/svgicon'
-
-const baseURL = import.meta.env.VITE_APP_BASE_API
-import defaultAvatar from '@/assets/images/default-avatar.png'
 
 import './permission' // permission control
 
@@ -44,6 +37,8 @@ import {
 import Pagination from '@/components/Pagination'
 // 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar'
+// 富文本组件
+import Editor from '@/components/Editor'
 // 文件上传组件
 import FileUpload from '@/components/FileUpload'
 // 图片上传组件
@@ -54,20 +49,10 @@ import ImagePreview from '@/components/ImagePreview'
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
 import DictTag from '@/components/DictTag'
-// 页面头部组件
-import TopHeader from '@/components/TopHeader'
-// 列表搜索
-import SearchForm from '@/components/SearchForm'
-// 列表组件
-import AdminTable from '@/components/AdminTable'
-// 弹窗
-import DialogModal from '@/components/DialogModal'
 
 const app = createApp(App)
 
 // 全局方法挂载
-app.config.globalProperties.baseURL = baseURL
-app.config.globalProperties.defaultAvatar = defaultAvatar
 app.config.globalProperties.useDict = useDict
 app.config.globalProperties.download = download
 app.config.globalProperties.parseTime = parseTime
@@ -85,10 +70,7 @@ app.component('FileUpload', FileUpload)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
-app.component('TopHeader', TopHeader)
-app.component('SearchForm', SearchForm)
-app.component('AdminTable', AdminTable)
-app.component('DialogModal', DialogModal)
+app.component('Editor', Editor)
 
 app.use(router)
 app.use(store)
