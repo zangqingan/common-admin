@@ -73,8 +73,13 @@ getBreadcrumb()
   margin-left: 8px;
 
   .no-redirect {
-    color: #97a8be;
+    color: #fff;
     cursor: text;
   }
+}
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+  font-weight: 400 !important;
+  color: #fff;
 }
 </style>

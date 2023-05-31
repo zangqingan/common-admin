@@ -42,7 +42,7 @@ export default defineConfig(({ mode, command }) => {
           // target: 'http://10.100.1.104:30384', // 废弃
           // target: 'http://10.100.1.104:30048/prod-api', // 废弃
           // target: 'http://192.168.11.102:20553', // 联调王骁
-          target: 'http://172.16.8.181:5050', // 开发
+          target: 'http://192.168.11.102:20793', // 开发
           // target: 'http://192.168.11.102:20745/prod-api', // 测试
           changeOrigin: true,
           rewrite: p => p.replace(/^\/dev-api/, ''),

@@ -13,3 +13,9 @@ onMounted(() => {
   })
 })
 </script>
+
+<style>
+html {
+  min-width: 1280px;
+}
+</style>
